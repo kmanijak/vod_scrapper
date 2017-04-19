@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "request-rate-limiter": "^1.0.1"
   },
   "devDependencies": {},
   "scripts": {

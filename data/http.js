@@ -7,7 +7,7 @@ import { hostName } from './constants';
  * @param {number} page
  * @returns {Promise}
  */
-export const getMoviesUrls = (page) => {
+export const getMoviesUrls = page => {
   const options = {
     host: hostName,
     path: createSitePath(page),
@@ -20,6 +20,6 @@ export const getMoviesUrls = (page) => {
  * Get movie detail
  * @param {string} url
  */
-export const getMovieDetails = (url) => (
+export const getMovieDetails = url => (
   limitedGet(url, transformMovieDetails(url))
 );

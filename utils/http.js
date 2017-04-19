@@ -28,6 +28,6 @@ export const limitedGet = (url, parser) => (
  * @param {number} site
  * @returns {string}
  */
-export const createSitePath = (site) => (
+export const createSitePath = site => (
   `/_a/list.html?lists={"SiteFilmy":{"elementId":"SiteFilmy","site":${site},"filters":{}}}`
 );

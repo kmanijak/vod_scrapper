@@ -1,8 +1,7 @@
 import express from 'express';
-import mongoose from 'mongoose';
 
 const app = express();
-const port = 3000;
+const port = 8080;
 
 app.get('/', (request, response) => {
   response.send('Hello from Express!');
@@ -69,5 +68,3 @@ app.listen(port, (err) => {
   }
   console.log(`server is listening on ${port}`);
 });
-
-mongoose.connect('localhost', 'db');

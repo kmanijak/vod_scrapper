@@ -1,4 +1,4 @@
-import { limitedGet, createSitePath } from '../utils/http';
+import { limitedGet, createSitePath } from '../src/utils/http';
 import { transformMoviesUrls, transformMovieDetails } from './transform';
 import { hostName } from './constants';
 
@@ -53,7 +53,7 @@ const getMovieDetails = url => (
  * @param {Array<string>} urls
  * @returns {Promise.<Array<Object>>}
  */
-export const getAllMoviesUrls = async urls => {
+export const getAllMoviesDetails = async urls => {
   await Promise.all(urls.map(
     url => getMovieDetails(url)
   )).then(details => details);

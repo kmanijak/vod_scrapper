@@ -5,7 +5,7 @@ import {
   getValueByQuerySelector,
   getSplitValues,
   getInnerHtmlOptionalValue,
-} from '../utils/transform';
+} from '../src/utils/transform';
 import {
   queryUrlsElement,
   queryUrlsHref,

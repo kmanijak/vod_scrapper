@@ -10,8 +10,10 @@ export const scrapVod = () => getAllMoviesUrls()
 
       getAllMoviesDetails(urls).then(movies => {
         movies.forEach(movie => {
-          const movieEntry = new Movie(movie);
-          movieEntry.save();
+          if (movie) {
+            const movieEntry = new Movie(movie);
+            movieEntry.save();
+          }
         })
       }).catch(error => console.warn('Couldn\'t fetch movies', error));
     }).catch(error => console.warn('Couldn\'t fetch urls', error));

@@ -20,9 +20,9 @@ export const getAllMoviesUrls = async () => {
     await getPageOfMoviesUrls(page)
       .then(urls => {
         if (urls.length) {
-          page += 1;
-          moviesUrls = moviesUrls.concat(urls);
           console.log(`Successfully fetched ${page}. page of urls`);
+          moviesUrls = moviesUrls.concat(urls);
+          page += 1;
         } else {
           page = null;
         }

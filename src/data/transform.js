@@ -102,6 +102,19 @@ const getImage = element => {
 };
 
 /**
+ * Parser for description containing few paragraphs
+ * @param element
+ * @returns {string}
+ */
+const getDescription = element => {
+  const descriptionParagraphs = element.querySelectorAll(queryMovieDescription);
+
+  return descriptionParagraphs ? Array.prototype.reduce.call(descriptionParagraphs,
+      (description, element) => description ? `${description}\n${element.innerHTML}` : element.innerHTML, ''
+    ) : '';
+};
+
+/**
  * Parser for page with movies details
  * @param {string} url
  * @returns {function}
@@ -138,7 +151,7 @@ const parseMovieDetails = url =>
         image: getImage(movieElement),
         year: getValueByQuerySelector(movieElement, queryMovieYear),
         duration: getValueByQuerySelector(movieElement, queryMovieDuration),
-        description: getValueByQuerySelector(movieElement, queryMovieDescription)
+        description: getDescription(movieElement)
       };
     }
     return null;

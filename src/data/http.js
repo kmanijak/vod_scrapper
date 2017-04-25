@@ -1,20 +1,12 @@
-import { limitedGet, createSitePath } from '../src/utils/http';
+import { limitedGet, createSitePath } from '../utils/http';
 import { transformMoviesUrls, transformMovieDetails } from './transform';
-import { hostName } from './constants';
 
 /**
  * Get one page of movies urls trasnformed to array
  * @param {number} page
  * @returns {Promise.<Array<string>>}
  */
-const getPageOfMoviesUrls = page => {
-  const options = {
-    host: hostName,
-    path: createSitePath(page),
-  };
-
-  return limitedGet(options, transformMoviesUrls);
-};
+const getPageOfMoviesUrls = page => limitedGet(`https://vod.pl${createSitePath(page)}`, transformMoviesUrls);
 
 /**
  * Get all movies urls, by iterating over pages, until empty one
@@ -22,18 +14,19 @@ const getPageOfMoviesUrls = page => {
  */
 export const getAllMoviesUrls = async () => {
   let page = 1;
-  const moviesUrls = [];
+  let moviesUrls = [];
 
   while (page) {
     await getPageOfMoviesUrls(page)
       .then(urls => {
         if (urls.length) {
           page += 1;
-          moviesUrls.concat(urls);
+          moviesUrls = moviesUrls.concat(urls);
+          console.log(`Successfully fetched ${page}. page of urls`);
         } else {
           page = null;
         }
-      });
+      }).catch(error => console.log(error));
   }
 
   return moviesUrls;
@@ -44,17 +37,20 @@ export const getAllMoviesUrls = async () => {
  * @param {string} url
  * @returns {Promise.<Object>}
  */
-const getMovieDetails = url => (
-  limitedGet(url, transformMovieDetails(url))
-);
+const getMovieDetails = url => limitedGet(url, transformMovieDetails(url));
 
 /**
  * Get all movies details based on array of urls
  * @param {Array<string>} urls
  * @returns {Promise.<Array<Object>>}
  */
-export const getAllMoviesDetails = async urls => {
+export const getAllMoviesDetails = async urls => (
   await Promise.all(urls.map(
-    url => getMovieDetails(url)
-  )).then(details => details);
-};
+    url => getMovieDetails(url).then(details => {
+      console.log(`Successfully fetched ${details.title} movie details`);
+      return details;
+    }).catch(
+      error => console.warn(`Couldn\'t fetch movie from ${url}`, error)
+    )
+  ))
+);

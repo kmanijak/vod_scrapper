@@ -5,7 +5,7 @@ import {
   getValueByQuerySelector,
   getSplitValues,
   getInnerHtmlOptionalValue,
-} from '../src/utils/transform';
+} from '../utils/transform';
 import {
   queryUrlsElement,
   queryUrlsHref,
@@ -87,7 +87,7 @@ const getGenres = element => {
   const genres = genresElement && genresElement.querySelectorAll(queryMovieGenre);
 
   return genres ? Array.prototype.map.call(genres,
-      (element) => getValue(element.innerHtml).replace(',', '')
+      element => getValue(element.innerHTML).replace(',', '')
     ) : [];
 };
 
@@ -126,12 +126,12 @@ const parseMovieDetails = url =>
     const movieElement = document.querySelector(queryMovieElement);
 
     if (movieElement) {
-      const titles = getTitles(movieElement);
+      const { title, originalTitle } = getTitles(movieElement);
 
       return {
         url,
-        title: titles.title,
-        originalTitle: titles.originalTitle,
+        title,
+        originalTitle,
         countries: getCountries(movieElement),
         genres: getGenres(movieElement),
         languages: getLanguages(movieElement),

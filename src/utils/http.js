@@ -9,15 +9,15 @@ const limiter = new RateLimiter({
  * Util for creation of limited get request
  * @param {string|object} url
  * @param {function} parser
- * @returns {Promise}s
+ * @returns {Promise}
  */
 export const limitedGet = (url, parser) => (
   limiter.request({
     url,
-    method: 'get',
-  }).then((response) => (
+    method: 'get'
+  }).then(response => (
     parser(response.body)
-  )).catch((error) => {
+  )).catch(error => {
     console.warn('Got error: ', error);
   })
 );

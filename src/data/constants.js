@@ -1,13 +1,6 @@
-// GENERAL
-export const hostName = 'vod.pl';
-
-
-
 // QUERY SELECTORS: MOVIES URLS
 export const queryUrlsElement = '.v_slideItem';
 export const queryUrlsHref = 'a';
-
-
 
 // QUERY SELECTORS: MOVIE DETAILS
 export const queryMovieElement = '#v_detailMovieVideo';

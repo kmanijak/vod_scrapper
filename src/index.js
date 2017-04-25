@@ -1,4 +1,7 @@
+import 'babel-polyfill';
 import express from 'express';
+import { scrapVod } from './data/provider';
+import { getUrls, getMovies } from './db/queries';
 
 const app = express();
 const port = 8080;
@@ -11,7 +14,7 @@ app.get('/', (request, response) => {
 
 // ---MOVIES---
 app.get('/movies-urls', (request, response) => {
-  response.send('List of movies urls');
+  getUrls().then(urls => response.json(urls));
 });
 
 app.get('/movies', (request, response) => {
@@ -19,7 +22,7 @@ app.get('/movies', (request, response) => {
 });
 
 app.get('/movies/:page', (request, response) => {
-  response.send('List of movies details. 30 per page.');
+  getMovies(request.params.page).then(movies => response.json(movies));
 });
 
 app.get('/movie/:id', (request, response) => {
@@ -68,3 +71,5 @@ app.listen(port, (err) => {
   }
   console.log(`server is listening on ${port}`);
 });
+
+scrapVod();

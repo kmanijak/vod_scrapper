@@ -14,7 +14,7 @@ const getDocument = rawHtml => jsdom.jsdom(rawHtml);
  * @param {Object} document
  */
 const closeWindow = document => {
-  const window = document.document.defaultView;
+  const window = document.defaultView;
   window.close();
 };
 

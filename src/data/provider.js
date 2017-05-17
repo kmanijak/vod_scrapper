@@ -1,6 +1,6 @@
-import { getAllMoviesUrls, getAllMoviesDetails } from './http';
+import { getAllMoviesUrls, getAllMoviesDetails, getGPEmployees } from './http';
 import { dropUrls, dropMovies } from '../db/drop';
-import { Url, Movie } from '../db/init';
+import { Url, Movie, User } from '../db/init';
 
 export const scrapVod = () => (
   dropUrls()
@@ -24,4 +24,16 @@ export const scrapVod = () => (
     ))
     .then(() => console.log('Scrapping finished successfully!'))
     .catch(error => console.warn('Something went wrong during scrapping', error))
+);
+
+export const getUsers = () => (
+  getGPEmployees()
+    .then(employees => {
+      employees.forEach(employee => {
+        const userEntry = new User(employee);
+        userEntry.save();
+      });
+    })
+    .then(() => console.log('Users saved!'))
+    .catch(error => console.warn('Something went wrong during user saving', error))
 );

@@ -1,21 +1,17 @@
 import 'babel-polyfill';
 import express from 'express';
-import passport from 'passport';
-import { scrapVod } from './data/provider';
-import { getUrls, getAllMovies, getMovies, getMovie } from './db/queries';
+import bodyParser from 'body-parser';
+import { scrapVod, getUsers } from './data/provider';
+import { getUrls, getAllMovies, getMovies, getMovie, getAllUsers, getUserById } from './db/queries';
 
 const app = express();
 const port = 8080;
 
-// ---INIT---
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(bodyParser.json());
 
 app.get('/', (request, response) => {
   response.send('Hello from Express!');
 });
-
-
 
 // ---MOVIES---
 app.get('/movies-urls', (request, response) => {
@@ -38,8 +34,6 @@ app.get('/movie/:id', (request, response) => {
     .catch(error => response.status(404).send('Not found'));
 });
 
-
-
 // ---VOTING---
 app.get('/votes', (request, response) => {
   response.send('Voting results');
@@ -53,26 +47,32 @@ app.post('/vote', (request, response) => {
   response.send('Vote for movie');
 });
 
-
-
 // ---USER---
 app.post('/login', (request, response) => {
-  response.json({});
+  login(request.body.user, request.body.password)
+    .then(userData => {
+      response.json(userData);
+    })
+    .catch(err => console.log(err));
 });
 
-app.get('/user', (request, response) => {
-  response.send('Return user session and data');
+app.get('/users', (request, response) => {
+  getAllUsers()
+    .then(users => response.json(users))
+    .catch(error => response.status(404).send('Not found'));
 });
 
-
-
+app.get('/user/:id', (request, response) => {
+  getUserById(request.params.id)
+    .then(user => response.json(user))
+    .catch(error => response.status(404).send('Not found'));
+});
 
 // ---ERROR---
 app.use((err, request, response, next) => {
   console.log('Error', err);
   response.status(500).send('Something broke!');
 });
-
 
 app.listen(port, (err) => {
   if (err) {
@@ -82,3 +82,4 @@ app.listen(port, (err) => {
 });
 
 // scrapVod();
+// getUsers();

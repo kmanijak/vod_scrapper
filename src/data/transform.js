@@ -1,4 +1,5 @@
 import jsdom from 'jsdom';
+import { parseString } from 'xml2js';
 import {
   transformHtml,
   getValue,
@@ -192,3 +193,5 @@ export const transformMovieDetails = url =>
    * }}
    */
   rawHtml => transformHtml(rawHtml, parseMovieDetails(url));
+
+export const transformEmployees = employees => JSON.parse(employees).employees;

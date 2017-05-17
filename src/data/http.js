@@ -1,5 +1,6 @@
-import { limitedGet, createSitePath } from '../utils/http';
-import { transformMoviesUrls, transformMovieDetails } from './transform';
+import key from '../../key.json';
+import { get, limitedGet, createSitePath } from '../utils/http';
+import { transformMoviesUrls, transformMovieDetails, transformEmployees } from './transform';
 
 /**
  * Get one page of movies urls trasnformed to array
@@ -54,3 +55,18 @@ export const getAllMoviesDetails = async urls => (
     )
   ))
 );
+
+export const getGPEmployees = async () => {
+  const appKeyBase64 = new Buffer(`${key.applicationKey}:x`).toString('base64');
+  const options = {
+    url: 'https://api.bamboohr.com/api/gateway.php/grandparade/v1/employees/directory',
+    method: 'GET',
+    headers: {
+      Authorization: `Basic ${appKeyBase64}`,
+      Accept: 'application/json',
+      Host: 'api.bamboohr.com'
+    }
+  };
+
+  return await get(options, transformEmployees);
+};
